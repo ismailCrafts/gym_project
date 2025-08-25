@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# 
+Membership Plans page template.
+Displays all membership plans dynamically with pricing.
+#}
+
+{% block title %}Membership Plan - Iron Temple{% endblock %}
+
+{% block head %}
+<h1><strong>Membership Plan</strong></h1>
+<p>Choose the plan that fits your fitness journey</p>
+{% endblock %}
+
+{% block body %}
+
+{# ------------------ Page Header ------------------ #}
+<div class="page-header text-center my-4">
+  <h2>Choose Your Membership Plan</h2>
+  <p>Flexible plans designed to fit your fitness journey</p>
+</div>
+
+{# ------------------ Membership Cards ------------------ #}
+<div class="container py-5">
+  <div class="row g-4">
+    {% for fee in fees %}
+      <div class="col-md-4">
+        <div class="card pricing-card">
+          <div class="card-header bg-{{ fee.color|default:'secondary' }}">
+            {{ fee.plan }}
+          </div>
+          <div class="card-body text-center">
+            <p class="price">{{ fee.price }} tk / month</p>
+            <a href="{% url 'enroll' %}" class="btn btn-{{ fee.color|default:'secondary' }} btn-join">Enroll Now</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

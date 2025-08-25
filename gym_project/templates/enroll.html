@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{# 
+Enrollment page template.
+Allows users to enroll in the gym by submitting personal details, selecting membership and trainer.
+Displays success/error messages after submission.
+#}
+
+{% block title %}Enrollment for Gym{% endblock %}
+
+{% block head %}
+<h1>Join The Best Gym In Dhaka</h1>
+
+<div class="container mt-2">
+  <div class="row">
+    <div class="col-md-3"></div> {# Left spacing #}
+
+    <div class="col-md-6">
+      {# ------------------ Display messages ------------------ #}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+
+      {# ------------------ Enrollment Form ------------------ #}
+      <form action="{% url 'enroll' %}" method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <input type="text" class="form-control" name="FullName" placeholder="Enter Your Full Name" required>
+        </div>
+
+        <div class="form-group mt-2">
+          <input type="email" class="form-control" value="{{ user.email }}" name="email" placeholder="Enter Your Email" readonly required>
+        </div>
+
+        <div class="form-group mt-2">
+          <select class="form-control" id="gender" name="gender" required>
+            <option selected>Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
+        <div class="form-group mt-2">
+          <input type="number" class="form-control" value="{{ user.username }}" name="PhoneNumber" placeholder="Enter Your Number" required>
+        </div>
+
+        <div class="form-group mt-2">
+          <input type="date" class="form-control" name="DOB" placeholder="Date Of Birth" required>
+        </div>
+
+        <div class="form-group mt-2">
+          <select class="form-control" id="member" name="member" required>
+            <option selected>Select Membership Plan</option>
+            {% for p in Membership %}
+              <option value="{{ p.plan }} - {{ p.price }}">{{ p.plan }} - {{ p.price }} tk</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group mt-2">
+          <select class="form-control" id="trainer" name="trainer" required>
+            <option selected>Select Trainer</option>
+            {% for p in SelectTrainer %}
+              <option value="{{ p.name }}">{{ p.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group mt-2">
+          <input type="text" class="form-control" name="address" placeholder="Address">
+        </div>
+
+        <div class="d-grid gap-2 mt-3">
+          <button class="btn btn-warning" type="submit">Enroll</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-md-3"></div> {# Right spacing #}
+  </div>
+</div>
+{% endblock head %}
